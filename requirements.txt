@@ -62,7 +62,7 @@ saver==0.0.2
 six==1.16.0
 SQLAlchemy==2.0.15
 stack-data==0.6.2
-tornado==6.3.2
+tornado==6.0.3
 traitlets==5.9.0
 typing_extensions==4.6.2
 tzdata==2023.3
