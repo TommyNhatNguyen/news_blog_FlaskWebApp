@@ -25,7 +25,7 @@ Flask-WTF==1.1.1
 fonttools==4.37.4
 greenlet==2.0.2
 ipykernel==6.16.2
-ipython==8.13.2
+ipython==7.34.0
 itsdangerous==2.1.2
 jedi==0.18.2
 Jinja2==3.1.2
