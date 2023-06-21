@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+        <div class="container-md" >
+            <div class="row">
+                <div class="col-md-auto">
+                    <!-- Hình ảnh -->
+                    {% if new.image %}
+                    <a href="{{ url_for('news') }}" class="text-center">
+                        <picture>
+                            <img src="{{ new.image }}" class="rounded float-left img-fluid" alt="" width="220" height="132">
+                        </picture>
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('news') }}">
+                        <picture>
+                            <img src="{{ url_for('static', filename='no_image.jpg') }}" alt="" class="rounded float-left img-fluid" width="220" height="132">
+                        </picture>
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="col-md">
+                    <!-- Tiêu đề -->
+                    <a href="{{ url_for('news') }}" class="text-black justify-content-md-center link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                        <h3>
+                            {{ new.title }}
+                        </h3>
+                    </a>
+                    <!-- Date -->
+                    <p>{{ new.date }}</p>
+                    </a>            
+                </div>
+            </div>
+            <div class="row-gap-md-0 align-content-around justify-content-evenly text-body fs-4">
+                <!-- Content -->
+                {{ new.content}}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

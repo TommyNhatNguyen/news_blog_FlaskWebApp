@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        {% if category == 'message' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% elif category == 'error' %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% else %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% endif %}
+    {% endfor %}
+{% endwith  %}
+
+<div class="card shadow">
+    <h5 class="card-header"> {{ current_user.username }} </h5>
+    <div class="card-body">
+        <p class="card-text">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-auto">
+                    {% if current_user.profile_pic %}
+                    <img src="{{ url_for('static', filename='users_profile/' + current_user.profile_pic) }}" alt="" width="150" height="150" class="rounded float-left" align="left">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='no_profile.png') }}" alt="" width="150" height="150" class="rounded float-left" align="left">
+                    {% endif %}  
+                </div>
+                <div class="col-md">
+                    <strong>Số thứ tự: </strong>{{ current_user.id }}<br>
+                    <strong>Tên tài khoản: </strong>{{ current_user.username }}<br>
+                    <strong>Email: </strong>{{ current_user.email }}<br>
+                    <strong>Giới thiệu: </strong>{{ current_user.about_author }}<br>
+                    <strong>Ngày tham gia: </strong>{{ current_user.date_added }}<br>
+                </div>
+            </div>
+        </div>
+        </p>
+    </div>
+    <hr>
+    <div class=" p-3 mb-5 bg-body rounded">
+        <h1>Cập nhật tài khoản</h1>
+        <form action="{{ url_for('user_profile') }}" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+    
+            {{ form.username.label(class='form-label')}}
+            {{ form.username(class='form-control', value=user.username) }}
+            <br>
+            {{ form.about_author.label(class='form-label')}}
+            <textarea name="about_author" id="" cols="30" rows="2" class="form-control" placeholder="Giới thiệu một xíu về bạn...">{{ user.about_author }}</textarea>
+            <br>
+            {{ form.profile_pic.label(class="form-label") }}
+            {{ form.profile_pic(class="form-control") }}            
+            <br/>
+            {{ form.submit(class='btn btn-success')}}
+        </form>
+    </div>
+</div>
+{% endblock %}

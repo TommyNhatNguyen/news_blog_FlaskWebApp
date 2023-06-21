@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        {% if category == 'message' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% elif category == 'error' %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% else %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% endif %}
+    {% endfor %}
+{% endwith  %}
+
+
+<div class="container-fluid">
+    <div class="row">
+    <!-- Main -->
+        <div class="col-md-8">
+            <!-- User navigation -->
+            <div class="container">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                        {% if current_user.is_authenticated %}
+                            <div class="hstack gap-3">
+                                <!-- Username/Profile pic -->
+                                <div class="col-md-auto">
+                                    <strong>{{ current_user.username }}</strong>
+                                </div>
+                                <!-- Tạo bài viết -->
+                                <div class="col-md">
+                                    <a href="{{ url_for('add_post') }}" class="text-decoration-none">
+                                        <input class="form-control" type="text" placeholder="Tạo bài viết">
+                                    </a>
+                                </div>
+                            </div>
+                        {% else %}
+                        <div class="card-body">
+                            <div class="hstack gap-3">
+                                <div class="col-md-auto">
+                                    <h5>Tham gia Tỉnh Kiến để cùng tranh luận nhé!</h5>
+                                </div>
+                                <div class="col-md">
+                                    <a class="nav-link" href="{{ url_for('register') }}">
+                                        <button class="btn btn-success d-flex me-2" type="button">Đăng ký</button>
+                                    </a>                
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            <hr>
+            <!-- Posts -->
+            <div class="row">
+                <div class="container">
+                    <h3 class="text-center">Các bài viết mới nhất</h3>
+                    {% for post in posts %}
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="hstack gap-3"> 
+                                <div class="col-md-auto">
+                                    {% if post.users.profile_pic %}
+                                    <img src="{{ url_for('static', filename='users_profile/' + post.users.profile_pic) }}" alt="" width="150" height="150" class="rounded float-left" align="left">
+                                    {% else %}
+                                    <img src="{{ url_for('static', filename='no_profile.png') }}" alt="" width="150" height="150" class="rounded float-left" align="left">
+                                    {% endif %}              
+                                </div>
+                                <div class="col-md">
+                                    <!-- Tiêu đề -->
+                                    <a href="{{ url_for('community_post', post_id=post.id) }}" class="text-black justify-content-md-center link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                        <h5>
+                                            {{ post.title }}
+                                        </h5>
+                                    </a>
+                                    <p>
+                                        <!-- Add tag -->
+                                       <strong>Tags: </strong>{{ post.tags }}<br>
+                                       <!-- Author -->
+                                        <strong>Author: </strong>{{ post.users.username }}<br>
+                                        <!-- Date -->
+                                        <strong>Date: </strong>{{ post.date_posted }}<br>                                
+                                    </p>
+                                    <!-- Follow & Unfollow -->
+                                    {% if post.users == current_user %}
+                                    <a class="nav-link" href="{{ url_for('user_profile') }}">
+                                        <button class="btn btn-outline-success btn-sm" type="button">Cập nhật Profile</button>
+                                    </a>
+                                    {% elif user == None %}
+                                    <a class="nav-link" href="{{ url_for('register') }}">
+                                        <button class="btn btn-outline-success btn-sm" type="button">Đăng ký</button>
+                                    </a>                 
+                                    {% elif not current_user.is_following(post.users) %}
+                                    <form action="{{ url_for('follow', id=post.users.id) }}" method="post">
+                                        {{ follow_form.hidden_tag() }}
+                                        {{ follow_form.submit(value='Theo dõi', class='btn btn-outline-success btn-sm') }}
+                                    </form>
+                                    {% else %}
+                                    <form action="{{ url_for('unfollow', id=post.users.id) }}" method="post">
+                                        {{ follow_form.hidden_tag() }}
+                                        {{ follow_form.submit(value='Hủy theo dõi', class='btn btn-outline-danger btn-sm') }}
+                                    </form>
+                                    {% endif %}
+                                    
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+            {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+    <!-- Other -->
+        <div class="col-md">
+            <h3 class="text-center">Báo chí</h3>
+            {% for new in news %}
+            <!-- Các bài báo nhỏ -->
+            <div class="container-md">
+                <div class="row">
+                <div class="col-md-auto">
+                        {% if new.image %}
+                        <a href="{{ new.link }}">
+                            <picture>
+                                <img src="{{ new.image }}" alt="" class="rounded float-left shadow" width="110" height="66">
+                            </picture>
+                        </a>
+                        {% else %}
+                        <a href="{{ new.link }}">
+                            <picture>
+                                <img src="{{ url_for('static', filename='no_image.jpg') }}" alt="" class="rounded float-left" width="110" height="66">
+                            </picture>
+                        </a>
+                        {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <!-- Tiêu đề -->
+                    <a href="{{ new.link }}" class="text-black justify-content-md-center link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                        <span class="d-inline-block text-truncate" style="max-width: 350px;"><strong><small>{{ new.title }}</small></strong></span>
+                    </a><br>
+                    <!-- Date -->
+                    <span class=""><small>{{ new.date }}</small></span>
+                    <!-- Xem chi tiết -->
+                    <a class="nav-link" href="{{ url_for('new', id=new.id) }}">
+                        <button class="btn btn-outline-success btn-sm" type="button">Xem chi tiết và note</button>
+                    </a>            
+                </div>
+            </div>
+            </div>
+            <hr>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

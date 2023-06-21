@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <div>
+            <!-- Image logo -->
+            <a class="navbar-brand" href="{{ url_for('community') }}"> <img src="{{ url_for('static', filename='logo.svg') }}" width="30" height="30" alt="">
+                Tỉnh Kiến
+                <!-- Câu Slogan -->
+            </a>
+        </div>
+        <!-- Content -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('community') }}">Thảo luận tri thức</a>
+            </li> 
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('news') }}">Báo chí</a>
+            </li>
+        </ul>
+        <!-- Search Box -->
+        <form class="d-flex" role="search" method="POST" action="">
+            <input class="form-control me-2" type="search" placeholder="Tìm tri thức" aria-label="Search" name="searched">
+        </form>
+        <!-- Login and Logout -->
+        <!-- Check nếu người dùng đăng nhập rồi thì không cần hiện 2 nút đăng nhập và đăng ký -->
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('user_profile') }}" class="nav-link">
+            <button class="btn btn-outline-secondary d-flex me-2" type="button">{{ current_user.username }}</button>
+        </a>        
+        <a class="nav-link" href="{{ url_for('logout') }}">
+            <button class="btn btn-outline-secondary d-flex me-2" type="button">Đăng xuất</button>
+        </a>
+        {% else %}
+        <a class="nav-link" href="{{ url_for('login') }}">
+            <button class="btn btn-outline-success d-flex me-2" type="button">Đăng nhập</button>
+        </a>
+        <a class="nav-link" href="{{ url_for('register') }}">
+            <button class="btn btn-success d-flex me-2" type="button">Đăng ký</button>
+        </a>
+        {% endif %}
+        </div>  
+    </div>
+</nav>
