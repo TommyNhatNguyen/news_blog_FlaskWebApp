@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        {% if category == 'message' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% elif category == 'error' %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% else %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% endif %}
+    {% endfor %}
+{% endwith  %}
+
+<section>
+<!-- Cách 1: sử dụng dữ liệu trực tiếp -->
+    <!-- <div class="container">
+        {% for i in range(images|length) %}
+            Các bài báo nhỏ
+            <div class="container-md">
+                <div class="row">
+                <div class="col-md-auto">
+                        {% if images[i]|float %}
+                        <a href="{{ link[i] }}">
+                            <picture>
+                                <img src="{{ url_for('static', filename='no_image.jpg') }}" alt="" class="rounded float-left" width="220" height="132">
+                            </picture>
+                        </a>
+                        {% else %}
+                        <a href="{{ link[i] }}">
+                            <picture>
+                                <img src="{{ images[i] }}" alt="" class="rounded float-left shadow" width="220" height="132">
+                            </picture>
+                        </a>
+                        {% endif %}
+                </div>
+                <div class="col-md">
+                    Tiêu đề
+                    <a href="{{ link[i] }}" class="text-black justify-content-md-center link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                        <h5>
+                            {{ title[i] |title}}
+                        </h5>
+                    </a>
+                    Date
+                    <p>{{ date[i] }}</p>
+                </div>
+                </div>
+            </div>
+            <hr>
+        {% endfor %} -->
+<!-- Cách 2: Sử dụng database -->
+    </div>
+    <div class="container">
+        <h1 class="text-center">Báo chí</h1>
+        <hr>
+        {% for new in news %}
+            <!-- Các bài báo nhỏ -->
+            <div class="container-md">
+                <div class="row">
+                <div class="col-md-auto">
+                        {% if new.image %}
+                        <a href="{{ new.link }}">
+                            <picture>
+                                <img src="{{ new.image }}" alt="" class="rounded float-left shadow" width="220" height="132">
+                            </picture>
+                        </a>
+                        {% else %}
+                        <a href="{{ new.link }}">
+                            <picture>
+                                <img src="{{ url_for('static', filename='no_image.jpg') }}" alt="" class="rounded float-left" width="220" height="132">
+                            </picture>
+                        </a>
+                        {% endif %}
+                </div>
+                <div class="col-md">
+                    <!-- Tiêu đề -->
+                    <a href="{{ new.link }}" class="text-black justify-content-md-center link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                        <h5>
+                            {{ new.title }}
+                        </h5>
+                    </a>
+                    <!-- Date -->
+                    <p>{{ new.date }}</p>
+                    <!-- Xem chi tiết -->
+                    <a class="nav-link" href="{{ url_for('new', id=new.id) }}">
+                        <button class="btn btn-outline-success d-flex me-2" type="button">Xem chi tiết và note</button>
+                    </a>            
+                </div>
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock %} 

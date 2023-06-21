@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Register</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        {% if category == 'message' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% elif category == 'error' %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% else %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+        {% endif %}
+    {% endfor %}
+{% endwith  %}
+
+{% if username %}
+    <h1>Hello {{ username }}</h1>
+{% else %}
+<br>
+<div class="shadow p-3 mb-5 bg-body rounded">
+    <h1>Đăng ký tài khoản Tỉnh Kiến</h1>
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+
+        {{ form.username.label(class='form-label')}}
+        {{ form.username(class='form-control') }}
+        <br>
+        {{ form.email.label(class='form-label')}}
+        {{ form.email(class='form-control') }}
+        <br>
+        {{ form.password.label(class='form-label')}}
+        {{ form.password(class='form-control') }}
+        <br>
+        {{ form.password_confirm.label(class='form-label')}}
+        {{ form.password_confirm(class='form-control') }}
+        <br>
+        {{ form.submit(class='btn btn-success')}}
+    </form>
+</div>
+{% endif %}
+
+<!-- <table class="table">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">username</th>
+            <th scope="col">email</th>
+            <th scope="col">password_hash</th>
+            <th scope="col">date added</th>
+            <th scope="col">delete user</th>
+        </tr>
+    </thead>
+    {% for user in users %}
+  <tbody>
+    <tr>
+      <th scope="row">{{ user.id }}</th>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.password_hash }}</td>
+      <td>{{ user.date_added }}</td>
+      <td><a href="{{ url_for('delete', id=user.id) }}">Xóa email</a></td>
+    </tr>
+  </tbody>
+  {% endfor %}
+</table> -->
+{% endblock %} 

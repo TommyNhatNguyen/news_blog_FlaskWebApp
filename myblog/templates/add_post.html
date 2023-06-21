@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row-cols-auto border-bottom border-light-subtle">
+        <div class="hstack gap-md-2">
+            <div class="col">
+                <h3>
+                    Tạo bài viết
+                </h3>
+            </div>
+            <div class="col">
+                Số bài viết bạn có: {{ num_posts }}
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row-cols-auto shadow">
+        <div class="card">
+            <h5 class="card-header">Hãy nêu bất kỳ quan điểm nào {{ current_user.username }} muốn mà không sợ bị phán xét!</h5>
+            <div class="card-body">
+                <!-- Tiêu đề -->
+                <form action="" method="POST">
+                    {{ form.hidden_tag() }}
+            
+                    {{ form.title.label(class='form-label')}}
+                    {{ form.title(class='form-control', rows=1, placeholder='Tiêu đề') }}
+                    <br>
+                    {{ form.content.label(class='form-label')}}
+                    {{ form.content(class='form-control') }}
+                    <br>
+                    <div class="row">
+                        <div class="col-md-auto">
+                            {{ form.tags(class='form-control', placeholder='Thẻ Tag') }}        
+                        </div>
+                        <div class="col-md">
+                            {{ form.submit(class='btn btn-success float-end')}}
+                        </div>
+                    </div>
+                </form>
+                {{ ckeditor.load() }}
+                {{ ckeditor.config(name='content') }}               
+            </div>
+          </div>
+    </div>
+</div>
+
+{% endblock %}
