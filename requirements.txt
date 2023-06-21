@@ -69,5 +69,5 @@ tzdata==2023.3
 urllib3==1.26.16
 uuid==1.30
 wcwidth==0.2.6
-Werkzeug==2.3.4
+Werkzeug==2.2.3
 WTForms==3.0.1
